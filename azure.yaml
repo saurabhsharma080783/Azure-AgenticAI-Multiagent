@@ -17,7 +17,7 @@ services:
     language: python
 
     codeConfiguration:
-      runtime: python_3_11
+      runtime: python_3_13
       entryPoint: main.py
 
     uses:
@@ -39,7 +39,7 @@ services:
     language: python
 
     codeConfiguration:
-      runtime: python_3_11
+      runtime: python_3_13
       entryPoint: main.py
 
     uses:
@@ -61,7 +61,7 @@ services:
     language: python
 
     codeConfiguration:
-      runtime: python_3_11
+      runtime: python_3_13
       entryPoint: main.py
 
     uses:
@@ -83,7 +83,7 @@ services:
     language: python
 
     codeConfiguration:
-      runtime: python_3_11
+      runtime: python_3_13
       entryPoint: main.py
 
     uses:
