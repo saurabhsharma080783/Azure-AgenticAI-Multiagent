@@ -1,0 +1,58 @@
+name: Delete Foundry Environment
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install AZD
+        run: |
+          curl -fsSL https://aka.ms/install-azd.sh | bash
+
+      - name: Configure AZD Authentication
+        run: |
+          azd config set auth.useAzCliAuth true
+
+      - name: Select Environment
+        run: |
+          azd env new Agentic-AI-Foundry-Test || azd env select Agentic-AI-Foundry-Test
+
+
+      - name: Install AZD
+        run: |
+          curl -fsSL https://aka.ms/install-azd.sh | bash
+
+      - name: Install Azure AI Agents Extension
+        run: |
+          azd extension install azure.ai.agents
+
+      - name: Configure AZD Authentication
+        run: |
+          azd config set auth.useAzCliAuth true
+
+
+      - name: Select AZD Environment
+        run: |
+          azd env set AZURE_RESOURCE_GROUP rg-Agentic-AI-Foundry-Test
+          azd env set AZURE_SUBSCRIPTION_ID ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          azd env set AZURE_LOCATION eastus2
+   
+      - name: Delete Environment
+        run: |
+          azd down --force
