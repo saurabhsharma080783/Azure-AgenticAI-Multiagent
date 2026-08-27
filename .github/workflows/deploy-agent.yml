@@ -1,4 +1,4 @@
-name: Deploy Foundry Hosted Agents
+name: Deploy Foundry Multi-Agent Solution
 
 on:
   workflow_dispatch:
@@ -12,7 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Azure Login
         uses: azure/login@v2
@@ -33,18 +34,22 @@ jobs:
         run: |
           azd config set auth.useAzCliAuth true
 
-      - name: Show Tool Versions
+      - name: Show Installed Versions
         run: |
           az version
           azd version
           azd extension list
 
-      - name: Set up AZD Environment
+      - name: Set Up AZD Environment
         run: |
           azd env new Azure-AgenticAI-Multiagent || azd env select Azure-AgenticAI-Multiagent
           azd env set AZURE_SUBSCRIPTION_ID ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           azd env set AZURE_LOCATION eastus2
 
-      - name: Show AZD Environment
+      - name: Show Environment Values
         run: |
-          azd env get
+          azd env get-values
+
+      - name: Deploy Multi-Agent Solution
+        run: |
+          azd up --no-prompt
