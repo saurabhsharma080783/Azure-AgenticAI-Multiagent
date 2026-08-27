@@ -1,4 +1,4 @@
-name: Deploy Foundry Hosted Agenta
+name: Deploy Foundry Hosted Agents
 
 on:
   workflow_dispatch:
@@ -21,23 +21,6 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # FIX: Added required resource group parameter to the purge command
-      - name: Purge Soft-Deleted AI Services Resource
-        run: |
-          echo "Checking for soft-deleted accounts globally..."
-          DELETED_NAME=$(az cognitiveservices account list-deleted --query "[?name=='cog-afukzepc6elw4'].name" -o tsv)
-          
-          if [ "$DELETED_NAME" = "cog-afukzepc6elw4" ]; then
-            echo "Found soft-deleted resource! Wiping it out..."
-            az cognitiveservices account purge \
-              --location eastus2 \
-              --resource-group rg-Agentic-AI-Foundry-Azure \
-              --name cog-afukzepc6elw4
-            echo "Purge command completed."
-          else
-            echo "No soft-deleted resource found. Ready to deploy!"
-          fi
-
       - name: Install AZD
         run: |
           curl -fsSL https://aka.ms/install-azd.sh | bash
@@ -46,18 +29,22 @@ jobs:
         run: |
           azd extension install azure.ai.agents
 
-      # FIX: Force azd to share and inherit credentials from your OIDC Azure CLI token
       - name: Configure AZD Authentication
         run: |
           azd config set auth.useAzCliAuth true
-      # FIX: Initialize the azd environment variables explicitly
+
+      - name: Show Tool Versions
+        run: |
+          az version
+          azd version
+          azd extension list
+
       - name: Set up AZD Environment
         run: |
-          azd env new Agentic-AI-Foundry-Test || azd env select Agentic-AI-Foundry-Test
+          azd env new Azure-AgenticAI-Multiagent || azd env select Azure-AgenticAI-Multiagent
           azd env set AZURE_SUBSCRIPTION_ID ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           azd env set AZURE_LOCATION eastus2
 
-
-      - name: Deploy Foundry Agent
+      - name: Show AZD Environment
         run: |
-          azd up --no-prompt
+          azd env get
