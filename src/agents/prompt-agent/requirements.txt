@@ -1,4 +1,0 @@
-agent-framework-foundry
-agent-framework-foundry-hosting
-
-debugpy

@@ -1,103 +1,24 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
-
-requiredVersions:
-  extensions:
-    azure.ai.agents: '>=1.0.0-beta.13'
-
-name: azure-agenticai-multiagent
+name: azure-agenticai-solutionbuilder
 
 services:
 
   ai-project:
     host: azure.ai.project
 
-  orchestrator-agent:
-    host: azure.ai.agent
-    project: src/agents/orchestrator-agent
-    language: python
-
-    codeConfiguration:
-      runtime: python_3_13
-      entryPoint: main.py
-
-    uses:
-      - ai-project
-
-    kind: hosted
-
-    name: orchestrator-agent
-
-    description: Multi-agent orchestration service.
-
-    protocols:
-      - protocol: responses
-        version: 2.0.0
-
   requirement-agent:
     host: azure.ai.agent
     project: src/agents/requirement-agent
-    language: python
+    ...
 
-    codeConfiguration:
-      runtime: python_3_13
-      entryPoint: main.py
-
-    uses:
-      - ai-project
-
-    kind: hosted
-
-    name: requirement-agent
-
-    description: Requirement gathering specialist agent.
-
-    protocols:
-      - protocol: responses
-        version: 2.0.0
-
-  prompt-agent:
+  solution-builder-agent:
     host: azure.ai.agent
-    project: src/agents/prompt-agent
-    language: python
+    project: src/agents/solution-builder-agent
+    ...
 
-    codeConfiguration:
-      runtime: python_3_13
-      entryPoint: main.py
-
-    uses:
-      - ai-project
-
-    kind: hosted
-
-    name: prompt-agent
-
-    description: Prompt optimization specialist agent.
-
-    protocols:
-      - protocol: responses
-        version: 2.0.0
-
-  solution-agent:
+  solution-review-agent:
     host: azure.ai.agent
-    project: src/agents/solution-agent
-    language: python
-
-    codeConfiguration:
-      runtime: python_3_13
-      entryPoint: main.py
-
-    uses:
-      - ai-project
-
-    kind: hosted
-
-    name: solution-agent
-
-    description: Solution architecture specialist agent.
-
-    protocols:
-      - protocol: responses
-        version: 2.0.0
+    project: src/agents/solution-review-agent
+    ...
 
 infra:
   provider: microsoft.foundry
