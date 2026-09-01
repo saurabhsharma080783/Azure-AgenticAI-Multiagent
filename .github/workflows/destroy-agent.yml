@@ -47,12 +47,22 @@ jobs:
           azd config set auth.useAzCliAuth true
 
 
-      - name: Select AZD Environment
+      - name: Delete Resource Group
         run: |
-          azd env set AZURE_RESOURCE_GROUP rg-Agentic-AI-Foundry-Test
-          azd env set AZURE_SUBSCRIPTION_ID ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          azd env set AZURE_LOCATION eastus2
+          az group delete \
+            --name rg-Azure-AgenticAI-Multiagent \
+            --yes \
+            --no-wait
+
+
+#      - name: Select AZD Environment
+#        run: |
+#          azd env set AZURE_RESOURCE_GROUP rg-Agentic-AI-Foundry-Test
+#          azd env set AZURE_SUBSCRIPTION_ID ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+#          azd env set AZURE_LOCATION eastus2
    
       - name: Delete Environment
         run: |
           azd down --force
+
+
