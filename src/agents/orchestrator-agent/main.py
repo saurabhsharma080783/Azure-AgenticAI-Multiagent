@@ -1,5 +1,20 @@
 import os
 
+REQUIREMENT_AGENT = os.getenv(
+    "REQUIREMENT_AGENT_NAME",
+    "requirement-agent"
+)
+
+PROMPT_AGENT = os.getenv(
+    "PROMPT_AGENT_NAME",
+    "prompt-agent"
+)
+
+SOLUTION_AGENT = os.getenv(
+    "SOLUTION_AGENT_NAME",
+    "solution-agent"
+)
+
 from agent_framework import Agent
 from agent_framework.foundry import FoundryChatClient
 from agent_framework_foundry_hosting import ResponsesHostServer
