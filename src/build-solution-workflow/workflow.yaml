@@ -1,0 +1,12 @@
+name: build-solution-workflow
+
+steps:
+
+  - requirement-agent
+
+  - solution-builder-agent
+
+  - solution-review-agent
+
+output:
+  final-approved-solution
